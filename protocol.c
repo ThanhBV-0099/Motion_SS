@@ -230,7 +230,7 @@ extern unsigned long State_thong_so1; // thong so dong dien
 extern unsigned long State_thong_so2; // thong so cong suat
 extern unsigned long State_thong_so3; // kha nang thong so tong cong suat
 extern unsigned long State_thong_so4; // thong so dien ap
-extern volatile unsigned char State_sensor_1,run_countdown1;
+extern volatile unsigned char State_sensor,run_countdown1;
 extern volatile unsigned char doctime[10];
   //0:关 tắt /1:开 bật
 volatile unsigned char switch_1;
@@ -288,9 +288,9 @@ static unsigned char dp_download_switch_1_handle(const unsigned char value[], un
     //开关关
 		if(run_countdown1==1) // nut nhan tach biet voi cam bien
 		{
-		if(State_switch_1 == 0 || State_switch_1 == 1 )
+		if(switch_1 == 0 || switch_1 == 1 )
 		{
-		State_sensor_1=0;
+		State_sensor=0;
 		run_countdown1=0;
 		}
 		}
@@ -416,7 +416,7 @@ static unsigned char dp_download_countdown_1_handle(const unsigned char value[],
 //  unsigned long countdown_1;
   
   countdown_1 = mcu_get_dp_download_value(value,length);// lay gia tri countdown tren app
-	State_countdown_1 = countdown_1;
+	//State_countdown_1 = countdown_1;
   /*
   //VALUE类型数据处理
   
