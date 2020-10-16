@@ -232,9 +232,9 @@ extern unsigned long State_thong_so3; // kha nang thong so tong cong suat
 extern unsigned long State_thong_so4; // thong so dien ap
 extern volatile unsigned char State_sensor_1,run_countdown1;
 extern volatile unsigned char doctime[10];
-  //0:关/1:开
+  //0:关 tắt /1:开 bật
 volatile unsigned char switch_1;
-	volatile  unsigned char ret;
+volatile  unsigned char ret;
 volatile  unsigned long countdown_1;
 void all_data_update(void)
 {
@@ -278,7 +278,7 @@ static unsigned char dp_download_switch_1_handle(const unsigned char value[], un
 {
   //Example: The current DP type isBOOL
 //  unsigned char ret;
-//  //0:关/1:开
+//  //0:关 tắt/1:开 bật
 //  unsigned char switch_1;
   
   switch_1 = mcu_get_dp_download_bool(value,length);

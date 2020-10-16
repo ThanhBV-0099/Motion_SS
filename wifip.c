@@ -1,41 +1,13 @@
 #include "wifip.h"
-#ifdef USE_WIFI 
 #include "wifi.h"
 #include "mcu_api.h" 
-#else
-#include "zigbee.h"
-#include "mcu_api.h"
 
-#endif
-
-#ifndef USE_CT1
-	#define TOUCH1_PAD1 HAL_GPIO_ReadPin(TOUCH_PAD1_GPIO_Port,TOUCH_PAD1_Pin)
-	#define LED1_RED SW1_LED_RED_GPIO_Port,SW1_LED_RED_Pin
-	#define LED1_BLUE SW1_LED_BLUE_GPIO_Port,SW1_LED_BLUE_Pin
-#else
-	#define TOUCH1_PAD1 HAL_GPIO_ReadPin(TOUCH_PAD2_GPIO_Port,TOUCH_PAD2_Pin)
-	#define LED1_RED SW2_LED_RED_GPIO_Port,SW2_LED_RED_Pin
-	#define LED1_BLUE SW2_LED_BLUE_GPIO_Port,SW2_LED_BLUE_Pin
-#endif
-
-#ifndef USE_CT2
-	#define Sensor1 HAL_GPIO_ReadPin(TOUCH_PAD2_GPIO_Port,TOUCH_PAD2_Pin)
-	#define LED2_RED SW2_LED_RED_GPIO_Port,SW2_LED_RED_Pin
-	#define LED2_BLUE SW2_LED_BLUE_GPIO_Port,SW2_LED_BLUE_Pin
-#else
-	#define Sensor1 HAL_GPIO_ReadPin(TOUCH_PAD3_GPIO_Port,TOUCH_PAD3_Pin)
-	#define LED2_RED SW3_LED_RED_GPIO_Port,SW3_LED_RED_Pin
-	#define LED2_BLUE SW3_LED_BLUE_GPIO_Port,SW3_LED_BLUE_Pin
-#endif
-
-#define Sensor2 HAL_GPIO_ReadPin(TOUCH_PAD3_GPIO_Port,TOUCH_PAD3_Pin)
-#define TOUCH1_PAD4 HAL_GPIO_ReadPin(TOUCH_PAD4_GPIO_Port,TOUCH_PAD4_Pin)
-
-
-#define LED3_RED SW3_LED_RED_GPIO_Port,SW3_LED_RED_Pin
-#define LED3_BLUE SW3_LED_BLUE_GPIO_Port,SW3_LED_BLUE_Pin
-#define LED4_RED SW4_LED_RED_GPIO_Port,SW4_LED_RED_Pin
-#define LED4_BLUE SW4_LED_BLUE_GPIO_Port,SW4_LED_BLUE_Pin
+#define BUTTON 							HAL_GPIO_ReadPin(BUTTON_GPIO_Port,BUTTON_Pin)
+#define SENSOR							HAL_GPIO_ReadPin(SENSOR_GPIO_Port,SENSOR_Pin)
+#define LED_WIFI						WIFI_STATUS_GPIO_Port,WIFI_STATUS_Pin
+#define LED_SENSOR					SENSOR_STATUS_GPIO_Port,SENSOR_STATUS_Pin
+#define GPIO_PIN_SET 				1
+#define GPIO_PIN_RESET 			0
 ////////////////struct rf
 typedef struct
 {
@@ -52,7 +24,7 @@ volatile FRAME_RECEIVE_RF Frame_Receive_Rf;
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart1;
 volatile uint8_t Nhanbuff=0,state_receive = 0;
-volatile uint8_t Nhanbuff_rf[200],Nhan_rf,state_receive_rf = 0,count_rf = 0;
+//volatile uint8_t Nhanbuff_rf[200],Nhan_rf,state_receive_rf = 0,count_rf = 0;
 volatile unsigned char m;
 extern unsigned long countdown_1;
 extern unsigned char out_dl;
@@ -104,8 +76,7 @@ volatile uint16_t count_wifi_status = 0,count_blink_1s = 0,modeconfig = 0,timeou
 									old_pad1 = 0,old_pad2 = 0,old_pad3 = 0,old_pad4 = 0,count_config_wifi = 0,state_config = 0,old_state1 = 0,
 									old_state2 = 0,old_state3 = 0,old_state4 = 0,timeout_update_rf = 0,count_reset_touch = 0,time_count_reset_touch = 0,flag_reset_touch = 0,
 									cycle_count_reset_touch = 0;;
-	static uint8_t has_change_touchpad = 0,old_button = 0;
-	static uint8_t buff_send_rf[6]={'A','X','X','X','X','@'};
+//	static uint8_t has_change_touchpad = 0,old_button = 0;
 /*
 	void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -267,12 +238,11 @@ void wifiprocess(void)
 //									cycle_count_reset_touch = 0;;
 //	static uint8_t has_change_touchpad = 0,old_button = 0;
 //	static uint8_t buff_send_rf[6]={'A','X','X','X','X','@'};
-	#ifdef USE_WIFI 
 	wifi_uart_service();
 		wifi_state = mcu_get_wifi_work_state();
 		if(wifi_state == WIFI_LOW_POWER)
 		{
-			printf("LOWPOW");
+		//	printf("LOWPOW");
 		}
 		else if(wifi_state == SMART_CONFIG_STATE)
 		{
@@ -297,9 +267,6 @@ void wifiprocess(void)
 		{
 			count_wifi_status_blink = 1;
 		}
-		#else
-		zigbee_uart_service();
-		#endif
 		//count cho hien thi trang thai wifi
 		if(count_wifi_status_blink == 0)
 		{
@@ -318,31 +285,31 @@ void wifiprocess(void)
 		
 		
 		/////count cho update data;
-		if(count_update> TIME_UPDATE)
-		{
-			if(nead_update_dienanng == 1)
-			{
-				count_update = 400;
-			}
-			else
-			{
-				count_update = 0;
-			}
+//		if(count_update> TIME_UPDATE)
+//		{
+//			if(nead_update_dienanng == 1)
+//			{
+//				count_update = 400;
+//			}
+//			else
+//			{
+//				count_update = 0;
+//			}
 
-			#ifdef USE_WIFI 
-			all_data_update();
-			#else
-			all_data_update();
-			#endif
-			
-			State_thong_so1 = 0;
-			
-		}
-		else
-		{
-			count_update++;
-		}
-		HAL_UART_Receive_IT(&huart2,&Nhan_rf,1);
+//			#ifdef USE_WIFI 
+//			all_data_update();
+//			#else
+//			all_data_update();
+//			#endif
+//			
+//			//State_thong_so1 = 0;
+//			
+//		}
+//		else
+//		{
+//			count_update++;
+//		}
+		//HAL_UART_Receive_IT(&huart2,&Nhan_rf,1);
 		HAL_UART_Receive_IT(&huart1,&Nhanbuff,1);
 		
 		//het timeout cua count setup
@@ -370,13 +337,13 @@ void wifiprocess(void)
 				{
 					modeconfig = 0;
 					timeout_config = 0;
+					HAL_GPIO_WritePin(LED_WIFI,0);
 				}
 				else
 				{
 					timeout_config++;
-				}
-				HAL_GPIO_WritePin(LED1_RED,GPIO_PIN_RESET);
-				HAL_GPIO_TogglePin(LED1_BLUE);
+				}			
+				HAL_GPIO_TogglePin(LED_WIFI);
 
 			}
 			else
@@ -393,56 +360,56 @@ void wifiprocess(void)
 
 		
 		//dinh ky reset touch 1 lan
-		if(cycle_count_reset_touch >= PERIOD_TO_RESET_TOUCH)
-		{
-			cycle_count_reset_touch = 0;
-			flag_reset_touch = 1;
-		}
-		else
-		{
-			cycle_count_reset_touch ++;
-		}
-		
-		//cho can de reset touch
-		if(flag_reset_touch == 1)
-		{
-			//Cho nay can reset touch
-			
-			HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_SET); // TAT touc
-			if(time_count_reset_touch >= 50)
-			{
-				time_count_reset_touch = 0;
-				flag_reset_touch = 2;
-				//cho nay can bat touch
-				HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_RESET); // BAT touc
-			}
-			else
-			{
-				time_count_reset_touch++;
-			}
-		}
-		//cho can de reset touch
-		else if(flag_reset_touch == 2)
-		{
-			HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_RESET); // BAT touc
-			if(time_count_reset_touch >= 50)
-			{
-				time_count_reset_touch = 0;
-				flag_reset_touch = 0;
-				//cho nay can bat touch
-			}
-			else
-			{
-				time_count_reset_touch++;
-			}
-		}
-		else
-		{
-			time_count_reset_touch = 0;
-		}
-		
+//		if(cycle_count_reset_touch >= PERIOD_TO_RESET_TOUCH)
+//		{
+//			cycle_count_reset_touch = 0;
+//			flag_reset_touch = 1;
+//		}
+//		else
+//		{
+//			cycle_count_reset_touch ++;
+//		}
+//		
+//		//cho can de reset touch
+//		if(flag_reset_touch == 1)
+//		{
+//			//Cho nay can reset touch
+//			
+//			//HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_SET); // TAT touc
+//			if(time_count_reset_touch >= 50)
+//			{
+//				time_count_reset_touch = 0;
+//				flag_reset_touch = 2;
+//				//cho nay can bat touch
+//			//	HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_RESET); // BAT touc
+//			}
+//			else
+//			{
+//				time_count_reset_touch++;
+//			}
+//		}
+//		//cho can de reset touch
+//		else if(flag_reset_touch == 2)
+//		{
+//			HAL_GPIO_WritePin(VTOUCH_DK_GPIO_Port,VTOUCH_DK_Pin,GPIO_PIN_RESET); // BAT touc
+//			if(time_count_reset_touch >= 50)
+//			{
+//				time_count_reset_touch = 0;
+//				flag_reset_touch = 0;
+//				//cho nay can bat touch
+//			}
+//			else
+//			{
+//				time_count_reset_touch++;
+//			}
+//		}
+//		else
+//		{
+//			time_count_reset_touch = 0;
+//		}
+//		
 		//kiem tra nut 1
-		if(TOUCH1_PAD1 == GPIO_PIN_SET && time_count_reset_touch == 0 )
+		if(BUTTON == 0 && time_count_reset_touch == 0 )
 		{				
 			mcu_dp_bool_update(DPID_SWITCH_1,State_switch_1);// update trang thai nut len app
 			time_count_setup = 0;
@@ -498,7 +465,7 @@ void wifiprocess(void)
 		//--------------------
 		
 		
-		if(Sensor1 == GPIO_PIN_RESET )
+		if(SENSOR == 0)
 		{
 			State_sensor_1=1;	
 			run_countdown1=1;
@@ -548,25 +515,6 @@ void wifiprocess(void)
 //		 }
 		 
 		}	
-		if( State_switch_1 == 1)   //relay
-		{
-			HAL_GPIO_WritePin(RELAY1_GPIO_Port,RELAY1_Pin,GPIO_PIN_SET);
-			if(modeconfig == 0)
-			{
-				HAL_GPIO_WritePin(LED1_RED,GPIO_PIN_RESET);
-				HAL_GPIO_WritePin(LED1_BLUE,GPIO_PIN_SET);
-			}
-		}
-		else
-		{
-			HAL_GPIO_WritePin(RELAY1_GPIO_Port,RELAY1_Pin,GPIO_PIN_RESET);
-			if(modeconfig == 0)
-			{
-				HAL_GPIO_WritePin(LED1_RED,GPIO_PIN_SET);
-				HAL_GPIO_WritePin(LED1_BLUE,GPIO_PIN_RESET);
-			}
-		}
-
 		}
 void wifi_init(void)
 {
@@ -575,18 +523,4 @@ void wifi_init(void)
 	HAL_GPIO_WritePin(ESP_RESET_GPIO_Port,ESP_RESET_Pin,GPIO_PIN_SET);
 	HAL_Delay(1000);
 	HAL_UART_Receive_IT(&huart1,&Nhanbuff,1);
-	
-	#ifdef USE_WIFI 
-	wifi_protocol_init();
-	#else
-	zigbee_protocol_init();
-	#endif
-	#ifdef USE_WIFI 
-	//tiep tuc nhan du lieu
-	HAL_GPIO_WritePin(RESET_ZIGBEE_GPIO_Port,RESET_ZIGBEE_Pin,GPIO_PIN_SET);
-	HAL_UART_Receive_IT(&huart2,&Nhan_rf,1);
-	
-	//doc flash
-	Read_HocLenh();
-	#endif
 }
