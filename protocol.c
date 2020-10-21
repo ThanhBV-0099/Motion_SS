@@ -416,7 +416,7 @@ static unsigned char dp_download_countdown_1_handle(const unsigned char value[],
 //  unsigned long countdown_1;
   
   countdown_1 = mcu_get_dp_download_value(value,length);// lay gia tri countdown tren app
-	//State_countdown_1 = countdown_1;
+	State_countdown_1 = countdown_1;
   /*
   //VALUE类型数据处理
   

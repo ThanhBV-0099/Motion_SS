@@ -98,12 +98,7 @@
 /******************************************************************************
                           1:Modify product information                
 ******************************************************************************/
-#define PRODUCT_KEY "I57m89ZptsYNFCJr"    //The unique product identification generated after product is created on development platform
-//#define PRODUCT_KEY "Kd2J63GPIAOls1Ak"    //The unique product identification generated after product is created on development platform
-//#define PRODUCT_KEY "gwiscrte"    //The unique product identification generated after product is created on development platform
-//#define PRODUCT_KEY "wg4cfuec7qivd3b1"
-//#define PRODUCT_KEY "znxnfoh3xoqzckij"
-//#define PRODUCT_KEY  "jn14gibc9zuuqnp6"
+#define PRODUCT_KEY "Kd2J63GPIAOls1Ak"    //The unique product identification generated after product is created on development platform
 // thay doi phan giao dien nut bam va cong tac may nut
 #define MCU_VER "1.0.0"                                 //User's software version for MCU firmware upgrade, 
                                                         //MCU upgrade version needs to be modified
