@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-#define MAX_COUNT_RESET 300
+#define MAX_COUNT_RESET 500
 #define MAX_TIMEOUT_HEART_BEART 3000
 #define XUNG_NHAY 40
 #define NUM_OFF_COUNT_SETUP 6

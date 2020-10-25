@@ -202,7 +202,7 @@ If you need to open this macro, call the wifi_heart_stop function in the mcu_api
 ******************************************************************************/
 //开关(可下发可上报)
 //Notes:
-#define DPID_SWITCH_1 1 // ket noi nut nhan và app
+#define DPID_SWITCH_1 1
 //开关 2(可下发可上报)
 //Notes:
 #define DPID_SWITCH_2 2
@@ -214,18 +214,16 @@ If you need to open this macro, call the wifi_heart_stop function in the mcu_api
 #define DPID_SWITCH_4 4
 //开关1倒计时(可下发可上报)
 //Notes:
-//#define DPID_COUNTDOWN_1 7
-#define DPID_COUNTDOWN_1 9 // dung che do dem nguoc
+#define DPID_COUNTDOWN_1 7
 //开关2倒计时(可下发可上报)
 //Notes:
-#define DPID_COUNTDOWN_2 10
+#define DPID_COUNTDOWN_2 8
 //开关3倒计时(可下发可上报)
 //Notes:
-//#define DPID_COUNTDOWN_3 9
-#define DPID_COUNTDOWN_3 11
+#define DPID_COUNTDOWN_3 9
 //开关4倒计时(可下发可上报)
 //Notes:
-#define DPID_COUNTDOWN_4 100
+#define DPID_COUNTDOWN_4 10
 //增加电量(只上报)
 //Notes:
 #define DPID_ADD_ELE 101
