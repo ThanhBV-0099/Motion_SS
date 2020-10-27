@@ -95,14 +95,14 @@ void coundown_process(void)
 			}
 			else //neu dung bang 1 thi togle thiet bi
 			{
+				State_switch_1 = 0;
+				mcu_dp_bool_update(DPID_SWITCH_1,State_switch_1);
 				State_countdown_1 = countdown_1;
 				//count_update = TIME_NEED_UPDATE;
 				State_sensor=0;
 				run_countdown1=0;
 				run_countdown2=0;
-				use_bt=0;
-				State_switch_1 = 0;
-				mcu_dp_bool_update(DPID_SWITCH_1,State_switch_1);
+				use_bt=0;	
 			}		
 	}
 }
@@ -199,6 +199,14 @@ void wifiprocess(void)
 				State_switch_1 = 1;
 				mcu_dp_bool_update(DPID_SWITCH_1,State_switch_1); // update trang thai len phan mem
 				use_bt=1;
+				if(countdown_1==0 )
+			{
+				State_countdown_1=60;
+			}
+			else
+			{
+				State_countdown_1=countdown_1;
+			}	
 				if(time_sensor>=15)
 				{
 				HAL_GPIO_TogglePin(BAO_SENSOR);
@@ -214,14 +222,7 @@ void wifiprocess(void)
 				HAL_GPIO_WritePin(BAO_SENSOR,GPIO_PIN_RESET);
 				run_countdown2=1;	
 		}	
-			if(countdown_1==0 )
-			{
-				State_countdown_1=60;
-			}
-			else
-			{
-				State_countdown_1=countdown_1;
-			}			
+				
 	}
 void wifi_init(void)
 {
